@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - GymSync</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <p>Welcome back, <strong>{{ user.username }}</strong>! Role: <strong>{{ user.get_role_display }}</strong></p>
+
+    <p>
+        <a href="{% url 'profile' %}">Edit Profile</a> | 
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </p>
+    <hr>
+
+    <h3>Admin Control Panel</h3>
+    <p>Manage members, view attendance logs, and oversee gym subscriptions here.</p>
+</body>
+</html>

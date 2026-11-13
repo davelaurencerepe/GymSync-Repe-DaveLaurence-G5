@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Dashboard - GymSync</title>
+</head>
+<body>
+    <h1>Member Dashboard</h1>
+    <p>Welcome back, <strong>{{ user.username }}</strong>! Role: <strong>{{ user.get_role_display }}</strong></p>
+
+    <p>
+        <a href="{% url 'profile' %}">Edit Profile</a> | 
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </p>
+    <hr>
+
+    <h3>Your Member Portal</h3>
+    <p>View your workout plans, check-in history, and membership status here.</p>
+</body>
+</html>
