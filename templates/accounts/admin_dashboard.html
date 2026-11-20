@@ -58,7 +58,7 @@
             </a>
             <div class="d-flex align-items-center gap-2">
                 <span class="badge badge-admin px-3 py-2 text-uppercase fw-semibold">
-                    <i class="bi bi-shield-lock-fill me-1"></i> Admin
+                    <i class="bi bi-shield-lock-fill me-1"></i> {{ user.get_role_display }}
                 </span>
                 <a href="{% url 'profile' %}" class="btn btn-outline-light btn-sm px-3">
                     <i class="bi bi-person-circle me-1"></i> Profile
@@ -164,6 +164,13 @@
                         <div class="fw-bold text-dark mb-1"><i class="bi bi-shield-lock text-danger me-2"></i>Django Administration</div>
                         <p class="text-muted small mb-3">Direct backend access to all database tables and permissions.</p>
                         <a href="/admin/" target="_blank" class="btn btn-outline-danger btn-sm">Open Django Admin</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <div class="fw-bold text-dark mb-1"><i class="bi bi-cash-coin text-warning me-2"></i>Membership Payments</div>
+                        <p class="text-muted small mb-3">Record payments, extend memberships, and review payment history.</p>
+                        <a href="{% url 'payments:list' %}" class="btn btn-outline-warning btn-sm">Manage Payments</a>
                     </div>
                 </div>
             </div>

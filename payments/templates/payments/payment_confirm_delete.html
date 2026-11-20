@@ -1,0 +1,25 @@
+{% extends "payments/base.html" %}
+{% block title %}Delete Payment - GymSync{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="table-card p-4 text-center">
+            <div class="text-danger mb-2"><i class="bi bi-exclamation-triangle-fill fs-1"></i></div>
+            <h4 class="fw-bold text-dark mb-2">Delete this payment?</h4>
+            <p class="text-muted mb-4">
+                ₱{{ payment.amount }} paid by
+                <strong class="text-dark">{{ payment.member.get_full_name|default:payment.member.username }}</strong>
+                on {{ payment.payment_date|date:"M d, Y" }}. This cannot be undone.
+            </p>
+            <form method="POST" class="d-flex justify-content-center gap-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger px-4 fw-semibold">
+                    <i class="bi bi-trash me-1"></i> Yes, delete
+                </button>
+                <a href="{% url 'payments:list' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
