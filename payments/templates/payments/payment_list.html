@@ -1,0 +1,83 @@
+{% extends "payments/base.html" %}
+{% block title %}Payments - GymSync{% endblock %}
+
+{% block content %}
+<div class="p-4 mb-4 bg-white rounded-3 shadow-sm border-start border-warning border-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div>
+        <h2 class="fw-bold text-dark mb-1">Membership Payments</h2>
+        <p class="text-muted mb-0">
+            Record payments and review payment history.
+            <span class="badge bg-secondary ms-1">{{ payments|length }} record{{ payments|length|pluralize }}</span>
+        </p>
+    </div>
+    <a href="{% url 'payments:create' %}" class="btn btn-primary fw-semibold">
+        <i class="bi bi-plus-circle me-1"></i> Record Payment
+    </a>
+</div>
+
+<div class="table-card p-4">
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-md-6 col-lg-5">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search by member name or username">
+            </div>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+            {% if q %}<a href="{% url 'payments:list' %}" class="btn btn-outline-secondary">Clear</a>{% endif %}
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Member</th>
+                    <th>Plan</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Valid Until</th>
+                    <th>Recorded By</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in payments %}
+                <tr>
+                    <td>{{ p.payment_date|date:"M d, Y" }}</td>
+                    <td>
+                        <div class="fw-semibold text-dark">{{ p.member.get_full_name|default:p.member.username }}</div>
+                        <div class="small text-muted">@{{ p.member.username }}</div>
+                    </td>
+                    <td><span class="badge bg-info-subtle text-info-emphasis">{{ p.plan.name }}</span></td>
+                    <td class="fw-semibold">₱{{ p.amount }}</td>
+                    <td>{{ p.get_method_display }}</td>
+                    <td>{{ p.period_end|date:"M d, Y" }}</td>
+                    <td class="small text-muted">{{ p.recorded_by.username|default:"-" }}</td>
+                    <td class="text-end">
+                        {% if p.editable %}
+                            <a href="{% url 'payments:edit' p.pk %}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                        {% endif %}
+                        {% if user.role == "ADMIN" %}
+                            <a href="{% url 'payments:delete' p.pk %}" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-3 d-block mb-1"></i>No payments found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
